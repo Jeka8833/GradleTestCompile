@@ -10,8 +10,9 @@ jdk:
 
 os:
   - osx
-  - windows
   - linux
+
+dist: trusty
 
 script:
   - ./gradlew clean
