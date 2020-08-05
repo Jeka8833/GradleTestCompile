@@ -8,7 +8,7 @@ deploy:
   file_glob: true
   skip_cleanup: true
   api_key: $GITHUB_TOKEN
-  file: "TestFile.jar"
+  file: "build/libs/GradleTestCompile-all-1.0-SNAPSHOT.jar"
   on:
     all_branches: true
     tags: true
