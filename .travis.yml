@@ -1,1 +1,4 @@
 language: java
+deploy:
+  provider: releases
+  github-token: &git_token
