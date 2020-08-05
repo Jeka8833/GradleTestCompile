@@ -1,14 +1,16 @@
 language: java
 
 script:
+  - ./gradlew clean
   - ./gradlew jar
 
 deploy:
   provider: releases
-  file_glob: true
-  skip_cleanup: true
   api_key: $GITHUB_TOKEN
-  file: "build/libs/GradleTestCompile-all-1.0-SNAPSHOT.jar"
+  file_glob: true
+  file: "build/libs/*"
+  skip_cleanup: true
+  name: Test name
   on:
     all_branches: true
     tags: true
