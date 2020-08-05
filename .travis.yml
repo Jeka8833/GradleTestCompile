@@ -6,4 +6,5 @@ deploy:
   api_key: $GITHUB_TOKEN
   file: "TestFile.jar"
   on:
+    branch: master
     tags: true
