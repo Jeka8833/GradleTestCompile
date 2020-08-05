@@ -8,6 +8,11 @@ jdk:
   - openjdk11
   - openjdk14
 
+os:
+  - osx
+  - windows
+  - linux
+
 script:
   - ./gradlew clean
   - ./gradlew jar
