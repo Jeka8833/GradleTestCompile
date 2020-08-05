@@ -1,8 +1,9 @@
 language: java
 deploy:
   provider: releases
+  file_glob: true
+  skip_cleanup: true
   api_key: $GITHUB_TOKEN
   file: "Test.jar"
-  keep_history: true
   on:
     tags: true
