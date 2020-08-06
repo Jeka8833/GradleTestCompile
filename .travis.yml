@@ -14,5 +14,7 @@ deploy:
   file_glob: true
   file: "build/libs/*"
   skip_cleanup: true
+  name: Gradel Test compile
   on:
     all_branches: true
+    tags: true
