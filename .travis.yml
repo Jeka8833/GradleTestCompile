@@ -13,8 +13,8 @@ deploy:
   api_key: $GITHUB_TOKEN
   file_glob: true
   file: "build/libs/*"
-  name: Gradle Test
-  cleaup: false
+  skip_cleanup: true
+  name: Test name
   on:
     all_branches: true
     tags: true
