@@ -2,15 +2,9 @@ language: java
 
 jdk:
   - oraclejdk8
-  - oraclejdk11
   - oraclejdk14
   - openjdk8
-  - openjdk11
   - openjdk14
-
-os:
-  - osx
-  - linux
 
 dist: trusty
 
@@ -23,8 +17,6 @@ deploy:
   api_key: $GITHUB_TOKEN
   file_glob: true
   file: "build/libs/*"
-  skip_cleanup: true
-  name: Test name
   on:
     all_branches: true
     tags: true
