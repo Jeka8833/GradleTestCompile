@@ -7,6 +7,7 @@ dist: trusty
 before_deploy:
   - ./gradlew clean
   - ./gradlew jar
+  - ./gradlew publish -Pgpr.user=$GITHUB_USERNAME -Pgpr.key=$GITHUB_TOKEN
 
 deploy:
   provider: releases
@@ -15,7 +16,6 @@ deploy:
   file: "build/libs/*"
   skip_cleanup: true
   name: Gradel Test compile
-  tag: beta
   on:
     all_branches: true
-#    tags: true
+    tags: true

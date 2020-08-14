@@ -1,5 +1,6 @@
 plugins {
     id 'java'
+    id 'maven-publish'
 }
 
 group 'org.example'
@@ -22,4 +23,26 @@ task fatJar(type: Jar) {
     baseName = project.name + '-all'
     from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
     with jar
+}
+
+publishing {
+    repositories {
+        maven {
+            name = "GradleTestCompile"
+            url = uri("https://maven.pkg.github.com/Jeka8833/GradleTestCompile")
+            credentials {
+                username = project.findProperty("gpr.user")
+                password = project.findProperty("gpr.key")
+            }
+        }
+    }
+    publications {
+        gpr(MavenPublication) {
+            groupId = 'com.Jeka8833'
+            artifactId = 'GradleTestCompile'
+            version = '0.1'
+
+            from(components.java)
+        }
+    }
 }
