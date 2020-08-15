@@ -3,21 +3,19 @@ plugins {
     id 'maven-publish'
 }
 
-version "2.0.3"
+version "2.0.4"
 
-// Write "no" when there is no running class
+// Write "disable" when there is no running class
 // def _mainClass = "disable"
 def _mainClass = "com.Jeka8833.Test.Main"
 
-// Write "no" when you don't need to create a version file
+// Write "disable" when you don't need to create a version file
 // def _versionFile = "disable"
 def _versionFile = "com.Jeka8833.Test.Version"
 
 
 // Maven repository setting
 // ============================================
-
-//def _mavenURL = "disable"
 def _mavenURL = "https://maven.pkg.github.com/Jeka8833/GradleTestCompile"
 group "com.Jeka8833"
 
@@ -34,13 +32,36 @@ dependencies {
     testCompile group: 'junit', name: 'junit', version: '4.12'
 }
 
-task fatJar(type: Jar) {
-    manifest {
-        attributes 'Implementation-Title': 'Gradle Jar File Example',
-                'Implementation-Version': version,
-                'Main-Class': 'com.Jeka8833.Test.Main'
+/**
+ * Manifest
+ * */
+ext.sharedManifest = manifest {
+    if (_mainClass.equalsIgnoreCase("disable")) {
+        attributes 'Implementation-Title': project.name,
+                'Implementation-Version': project.version
+    } else {
+        attributes 'Implementation-Title': project.name,
+                'Implementation-Version': project.version,
+                'Main-Class': _mainClass
     }
-    baseName = project.name + '-all'
+}
+
+/**
+ * Build without libraries
+ * */
+jar {
+    manifest = project.manifest {
+        from sharedManifest
+    }
+}
+
+/**
+ * Build with libraries
+ * */
+task fatJar(type: Jar) {
+    manifest = project.manifest {
+        from sharedManifest
+    }
     from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
     with jar
 }
@@ -75,8 +96,8 @@ task updateVersionFile {
         if (lastDot != -1) {
             def className = _versionFile.substring(lastDot + 1)
             def packagePath = _versionFile.substring(0, lastDot)
-            def versionFile = new File(projectDir, "/src/main/java/" + _versionFile.replace('.', '/') + ".java")
-            versionFile.text = """package $packagePath;
+            new File(projectDir, "/src/main/java/" + _versionFile.replace('.', '/') + ".java")
+                    .text = """package $packagePath;
 
 public class $className {
 
