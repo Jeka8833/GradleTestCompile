@@ -3,7 +3,7 @@ plugins {
     id 'maven-publish'
 }
 
-version "2.0.2"
+version "2.0.3"
 
 // Write "no" when there is no running class
 // def _mainClass = "disable"
@@ -76,7 +76,6 @@ task updateVersionFile {
             def className = _versionFile.substring(lastDot + 1)
             def packagePath = _versionFile.substring(0, lastDot)
             def versionFile = new File(projectDir, "/src/main/java/" + _versionFile.replace('.', '/') + ".java")
-            versionFile.mkdirs()
             versionFile.text = """package $packagePath;
 
 public class $className {
