@@ -3,7 +3,7 @@ plugins {
     id 'maven-publish'
 }
 
-version "2.0.1"
+version "2.0.2"
 
 // Write "no" when there is no running class
 // def _mainClass = "disable"
@@ -17,11 +17,14 @@ def _versionFile = "com.Jeka8833.Test.Version"
 // Maven repository setting
 // ============================================
 
-//_mavenURL = "disable"
-_mavenURL = "https://maven.pkg.github.com/Jeka8833/GradleTestCompile"
-_mavenName = "Gradle Test Compile"
+//def _mavenURL = "disable"
+def _mavenURL = "https://maven.pkg.github.com/Jeka8833/GradleTestCompile"
 group "com.Jeka8833"
 
+java {
+    withJavadocJar()
+    withSourcesJar()
+}
 
 repositories {
     mavenCentral()
@@ -48,8 +51,8 @@ task fatJar(type: Jar) {
 publishing {
     repositories {
         maven {
-            name = _mavenName
-            url = uri(_mavenURL)
+            name = project.name
+            url = _mavenURL
             credentials {
                 username = project.findProperty("gpr.user")
                 password = project.findProperty("gpr.key")
@@ -57,8 +60,8 @@ publishing {
         }
     }
     publications {
-        gpr(MavenPublication) {
-            from(components.java)
+        mavenJava(MavenPublication) {
+            from components.java
         }
     }
 }
