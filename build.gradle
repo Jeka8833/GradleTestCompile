@@ -3,7 +3,7 @@ plugins {
     id 'maven-publish'
 }
 
-version "1.0.1"
+version "2.0.1"
 
 // Write "no" when there is no running class
 // def _mainClass = "disable"
