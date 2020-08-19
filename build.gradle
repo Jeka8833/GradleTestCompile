@@ -80,12 +80,16 @@ publishing {
 build {
     group gradle.mavenGroup
     version getNewVersion()
-    if(gradle.createVersionFile)
+    if (gradle.createVersionFile)
         createVersionFile()
 }
 
 String getNewVersion() {
-    if (!gradle.autoVersion) return gradle.version
+    String tag = project.findProperty("gpr.tag")
+    if (tag != null && !tag.isEmpty())
+        return tag
+    if (!gradle.autoVersion)
+        return gradle.version
     try {
         def version = new JsonSlurper().parseText(new URL('https://api.github.com/repos/'
                 + gradle.gitUser + '/' + gradle.gitProjectName + '/releases/latest').openStream().text).tag_name
