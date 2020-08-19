@@ -6,6 +6,7 @@ plugins {
 }
 
 version getNewVersion()
+group gradle.mavenGroup
 
 java {
     withJavadocJar()
@@ -33,21 +34,16 @@ ext.sharedManifest = manifest {
 }
 
 jar {
-    manifest = project.manifest {
-        from sharedManifest
-    }
+    manifest = sharedManifest
 }
 
 task fatJar(type: Jar) {
-    manifest = project.manifest {
-        from sharedManifest
-    }
+    manifest = sharedManifest
     from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
     with jar
 }
 
 publishing {
-    group gradle.mavenGroup
     repositories {
         maven {
             name = project.name
@@ -71,7 +67,7 @@ build {
 }
 
 String getNewVersion() {
-    String tag = project.findProperty("gpr.tag")
+    def tag = project.findProperty("gpr.tag")
     if (tag != null && !tag.isEmpty())
         return tag
     if (!gradle.autoVersion)
