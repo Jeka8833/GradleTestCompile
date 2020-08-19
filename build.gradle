@@ -57,6 +57,7 @@ task fatJar(type: Jar) {
  * Maven publication
  * */
 publishing {
+    group gradle.mavenGroup
     repositories {
         maven {
             name = project.name
@@ -78,7 +79,6 @@ publishing {
  * Create version class
  */
 build {
-    group gradle.mavenGroup
     version getNewVersion()
     if (gradle.createVersionFile)
         createVersionFile()
