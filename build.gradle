@@ -31,12 +31,14 @@ ext.sharedManifest = manifest {
 }
 
 jar {
+    version getNewVersion()
     manifest = project.manifest {
         from sharedManifest
     }
 }
 
 task fatJar(type: Jar) {
+    version getNewVersion()
     manifest = project.manifest {
         from sharedManifest
     }
@@ -45,6 +47,7 @@ task fatJar(type: Jar) {
 }
 
 publishing {
+    version getNewVersion()
     group gradle.mavenGroup
     repositories {
         maven {
