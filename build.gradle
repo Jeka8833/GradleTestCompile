@@ -78,6 +78,7 @@ publishing {
  * Create version class
  */
 build {
+    group gradle.mavenGroup
     version getNewVersion()
     if(gradle.createVersionFile)
         createVersionFile()
@@ -87,7 +88,7 @@ String getNewVersion() {
     if (!gradle.autoVersion) return gradle.version
     try {
         def version = new JsonSlurper().parseText(new URL('https://api.github.com/repos/'
-                + gradle.gitUser + '/' + gradle.gitProjectName + '/releases/latest').text).tag_name
+                + gradle.gitUser + '/' + gradle.gitProjectName + '/releases/latest').openStream().text).tag_name
         new File('lastversion').text = version
         return version
     } catch (Exception ignored) {
