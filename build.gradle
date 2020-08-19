@@ -19,9 +19,6 @@ dependencies {
     implementation 'com.google.code.gson:gson:2.8.6'
 }
 
-/**
- * Manifest
- * */
 ext.sharedManifest = manifest {
     if (gradle.mainClassEnable) {
         attributes 'Implementation-Title': project.name,
@@ -33,18 +30,12 @@ ext.sharedManifest = manifest {
     }
 }
 
-/**
- * Build without libraries
- * */
 jar {
     manifest = project.manifest {
         from sharedManifest
     }
 }
 
-/**
- * Build with libraries
- * */
 task fatJar(type: Jar) {
     manifest = project.manifest {
         from sharedManifest
@@ -53,9 +44,6 @@ task fatJar(type: Jar) {
     with jar
 }
 
-/**
- * Maven publication
- * */
 publishing {
     group gradle.mavenGroup
     repositories {
@@ -75,9 +63,6 @@ publishing {
     }
 }
 
-/**
- * Create version class
- */
 build {
     version getNewVersion()
     if (gradle.createVersionFile)
