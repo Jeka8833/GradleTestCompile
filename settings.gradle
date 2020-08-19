@@ -1,1 +1,15 @@
 rootProject.name = 'GradleTestCompile'
+
+gradle.ext.gitUser = 'Jeka8833'
+gradle.ext.gitProjectName = 'GradleTestCompile'
+
+gradle.ext.group = 'com.Jeka8833'
+
+gradle.ext.version = '1.0.1'
+gradle.ext.autoVersion = true
+
+gradle.ext.mainClass = 'com.Jeka8833.Test.Main'
+gradle.ext.mainClassEnable = true
+
+gradle.ext.versionFilePath = 'com.Jeka8833.Test.Version'
+gradle.ext.createVersionFile = true

@@ -1,23 +1,9 @@
+import groovy.json.JsonSlurper
+
 plugins {
     id 'java'
     id 'maven-publish'
 }
-
-version "2.0.4"
-
-// Write "disable" when there is no running class
-// def _mainClass = "disable"
-def _mainClass = "com.Jeka8833.Test.Main"
-
-// Write "disable" when you don't need to create a version file
-// def _versionFile = "disable"
-def _versionFile = "com.Jeka8833.Test.Version"
-
-
-// Maven repository setting
-// ============================================
-def _mavenURL = "https://maven.pkg.github.com/Jeka8833/GradleTestCompile"
-group "com.Jeka8833"
 
 java {
     withJavadocJar()
@@ -30,19 +16,20 @@ repositories {
 
 dependencies {
     testCompile group: 'junit', name: 'junit', version: '4.12'
+    implementation 'com.google.code.gson:gson:2.8.6'
 }
 
 /**
  * Manifest
  * */
 ext.sharedManifest = manifest {
-    if (_mainClass.equalsIgnoreCase("disable")) {
-        attributes 'Implementation-Title': project.name,
-                'Implementation-Version': project.version
-    } else {
+    if (gradle.mainClassEnable) {
         attributes 'Implementation-Title': project.name,
                 'Implementation-Version': project.version,
-                'Main-Class': _mainClass
+                'Main-Class': gradle.mainClass
+    } else {
+        attributes 'Implementation-Title': project.name,
+                'Implementation-Version': project.version
     }
 }
 
@@ -73,7 +60,7 @@ publishing {
     repositories {
         maven {
             name = project.name
-            url = _mavenURL
+            url = 'https://maven.pkg.github.com/' + gradle.gitUser + '/' + gradle.gitProjectName
             credentials {
                 username = project.findProperty("gpr.user")
                 password = project.findProperty("gpr.key")
@@ -90,14 +77,37 @@ publishing {
 /**
  * Create version class
  */
-task updateVersionFile {
-    if (!_versionFile.equalsIgnoreCase("disable")) {
-        def lastDot = _versionFile.lastIndexOf('.')
-        if (lastDot != -1) {
-            def className = _versionFile.substring(lastDot + 1)
-            def packagePath = _versionFile.substring(0, lastDot)
-            new File(projectDir, "/src/main/java/" + _versionFile.replace('.', '/') + ".java")
-                    .text = """package $packagePath;
+build {
+    version getNewVersion()
+    if(gradle.createVersionFile)
+        createVersionFile()
+}
+
+String getNewVersion() {
+    if (!gradle.autoVersion) return gradle.version
+    try {
+        def version = new JsonSlurper().parseText(new URL('https://api.github.com/repos/'
+                + gradle.gitUser + '/' + gradle.gitProjectName + '/releases/latest').text).tag_name
+        new File('lastversion').text = version
+        return version
+    } catch (Exception ignored) {
+        println("WARN: Fail connect to github")
+        def file = new File('lastversion')
+        if (file.exists()) {
+            def text = file.text
+            return text.isEmpty() ? gradle.version : text
+        }
+        return gradle.version
+    }
+}
+
+void createVersionFile() {
+    def lastDot = gradle.versionFilePath.lastIndexOf('.')
+    if (lastDot != -1) {
+        def className = gradle.versionFilePath.substring(lastDot + 1)
+        def packagePath = gradle.versionFilePath.substring(0, lastDot)
+        new File(projectDir, "/src/main/java/" + gradle.versionFilePath.replace('.', '/') + ".java")
+                .text = """package $packagePath;
 
 public class $className {
 
@@ -108,8 +118,7 @@ public class $className {
         return "$project.version";
     }
 }"""
-        } else {
-            println("WARNING: Unable to create file in root folder")
-        }
+    } else {
+        println("WARN: Unable to create file in root folder")
     }
 }
