@@ -43,24 +43,6 @@ task fatJar(type: Jar) {
     with jar
 }
 
-publishing {
-    repositories {
-        maven {
-            name = 'gtc'
-            url = 'https://maven.pkg.github.com/' + gradle.gitUser + '/' + gradle.gitProjectName
-            credentials {
-                username = project.findProperty("gpr.user")
-                password = project.findProperty("gpr.key")
-            }
-        }
-    }
-    publications {
-        mavenJava(MavenPublication) {
-            from components.java
-        }
-    }
-}
-
 build {
     if (gradle.createVersionFile)
         createVersionFile()
