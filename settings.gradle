@@ -1,4 +1,4 @@
-rootProject.name = 'GradleTestCompile'
+rootProject.name = 'gtc'
 
 gradle.ext.gitUser = 'Jeka8833'
 gradle.ext.gitProjectName = 'GradleTestCompile'

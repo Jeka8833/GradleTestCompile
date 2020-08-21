@@ -46,7 +46,7 @@ task fatJar(type: Jar) {
 publishing {
     repositories {
         maven {
-            name = 'testproject'
+            name = 'gtc'
             url = 'https://maven.pkg.github.com/' + gradle.gitUser + '/' + gradle.gitProjectName
             credentials {
                 username = project.findProperty("gpr.user")
