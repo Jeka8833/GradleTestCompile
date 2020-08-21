@@ -3,7 +3,7 @@ rootProject.name = 'GradleTestCompile'
 gradle.ext.gitUser = 'Jeka8833'
 gradle.ext.gitProjectName = 'GradleTestCompile'
 
-gradle.ext.mavenGroup = 'com.Jeka8833'
+gradle.ext.mavenGroup = 'com.jeka'
 
 gradle.ext.version = '1.0.1'
 gradle.ext.autoVersion = true
